@@ -1,39 +1,21 @@
-document.addEventListener('touchstart', (e) => {
-  console.log('touchstart', e);
-  [...e.changedTouches].forEach(touch => {
-    const dot = document.createElement('div');
-    dot.classList.add('dot');
-    dot.style.top = `${touch.pageY}px`;
-    dot.style.left = `${touch.pageX}px`;
-    dot.id = touch.identifier;
-    document.body.append(dot);
-  });
-});
+// DOM
+const swiper = document.querySelector('.swiper');
 
-document.addEventListener('touchmove', (e) => {
-  [...e.changedTouches].forEach(touch => {
-    const dot = document.getElementById(touch.identifier);
-    if (dot) {
-      dot.style.top = `${touch.pageY}px`;
-      dot.style.left = `${touch.pageX}px`;
-    }
-  });
-});
+// constants
+const urls = [
+  'https://source.unsplash.com/random/1000x1000/?sky',
+  'https://source.unsplash.com/random/1000x1000/?landscape',
+  'https://source.unsplash.com/random/1000x1000/?ocean',
+  'https://source.unsplash.com/random/1000x1000/?moutain',
+  'https://source.unsplash.com/random/1000x1000/?forest'
+];
 
-document.addEventListener('touchend', (e) => {
-  [...e.changedTouches].forEach(touch => {
-    const dot = document.getElementById(touch.identifier);
-    if (dot) {
-      dot.remove();
-    }
-  });
-});
+// variables
+let cardCount = 0;
 
-document.addEventListener('cancel', (e) => {
-  [...e.changedTouches].forEach(touch => {
-    const dot = document.getElementById(touch.identifier);
-    if (dot) {
-      dot.remove();
-    }
-  });
-});
+// first 5 cards
+for (let i = 0; i < 5; i++) {
+  const card = new Card({ imageUrl: urls[cardCount % 5] });
+  swiper.append(card.element);
+  cardCount++;
+}
