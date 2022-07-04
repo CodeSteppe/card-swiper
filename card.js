@@ -47,7 +47,7 @@ class Card {
     const rotate = this.#offsetX * 0.1;
     this.element.style.transform = `translate(${this.#offsetX}px, ${this.#offsetY}px) rotate(${rotate}deg)`;
     // dismiss card
-    if (Math.abs(this.#offsetX) > this.element.clientWidth) {
+    if (Math.abs(this.#offsetX) > this.element.clientWidth / 2) {
       this.#dismiss(this.#offsetX > 0 ? 1 : -1);
     }
   }
