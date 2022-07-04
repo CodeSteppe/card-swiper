@@ -32,7 +32,7 @@ function appendNewCard() {
   swiper.append(card.element);
   cardCount++;
 
-  const cards = swiper.querySelectorAll('.card');
+  const cards = swiper.querySelectorAll('.card:not(.dismissing)');
   cards.forEach((card, index) => {
     card.style.setProperty('--i', index);
   });
