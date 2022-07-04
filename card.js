@@ -6,6 +6,8 @@ class Card {
 
   // private properties
   #startPoint;
+  #offsetX;
+  #offsetY;
 
   #init = () => {
     const card = document.createElement('div');
@@ -16,7 +18,6 @@ class Card {
     // event listeners
     // mouse events
     card.addEventListener('mousedown', (e) => {
-      console.log('mousedown');
       const { clientX, clientY } = e;
       this.#startPoint = { x: clientX, y: clientY }
       document.addEventListener('mousemove', this.#handleMove);
@@ -24,9 +25,6 @@ class Card {
     });
 
     document.addEventListener('mouseup', this.#handleMoveEnd);
-    card.addEventListener('dragstart', (e) => {
-      e.preventDefault();
-    })
     // touch events
 
     this.element = card;
@@ -36,10 +34,15 @@ class Card {
     e.preventDefault();
     if (!this.#startPoint) return;
     const { clientX, clientY } = e;
-    const deltaX = clientX - this.#startPoint.x;
-    const deltaY = clientY - this.#startPoint.y;
-    const rotate = deltaX / window.innerWidth * 90;
-    this.element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotate}deg)`;
+    this.#offsetX = clientX - this.#startPoint.x;
+    this.#offsetY = clientY - this.#startPoint.y;
+    const rotate = this.#offsetX / window.innerWidth * 90;
+    this.element.style.transform = `translate(${this.#offsetX}px, ${this.#offsetY}px) rotate(${rotate}deg)`;
+    // dismiss card
+    if (Math.abs(this.#offsetX) > this.element.clientWidth) {
+      console.log('dismiss');
+      this.#dismiss(this.#offsetX > 0 ? 1 : -1);
+    }
   }
 
   #handleMoveEnd = (e) => {
@@ -47,5 +50,13 @@ class Card {
     this.element.removeEventListener('mousemove', this.#handleMove);
     this.element.style.transition = 'transform 0.5s';
     this.element.style.transform = '';
+  }
+
+  #dismiss = (direction) => {
+    this.element.removeEventListener('mousemove', this.#handleMove);
+    this.element.style.transition = 'transform 0.5s';
+    if (direction === 1) {
+      this.element.style.transform = '';
+    }
   }
 }

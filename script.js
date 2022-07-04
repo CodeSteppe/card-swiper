@@ -14,8 +14,15 @@ const urls = [
 let cardCount = 0;
 
 // first 5 cards
-for (let i = 0; i < 5; i++) {
-  const card = new Card({ imageUrl: urls[cardCount % 5] });
-  swiper.append(card.element);
-  cardCount++;
-}
+(function () {
+  for (let i = 0; i < 5; i++) {
+    const card = new Card({ imageUrl: urls[cardCount % 5] });
+    swiper.append(card.element);
+    cardCount++;
+  }
+
+  const cards = swiper.querySelectorAll('.card');
+  cards.forEach((card, index) => {
+    card.style.setProperty('--i', index);
+  });
+})()
