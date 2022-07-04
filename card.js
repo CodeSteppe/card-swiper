@@ -67,11 +67,11 @@ class Card {
     this.#startPoint = null;
     document.removeEventListener('mouseup', this.#handleMoveUp);
     document.removeEventListener('mousemove', this.#handleMouseMove);
-    this.element.style.transition = 'transform 0.5s';
-    this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${45 * direction}deg)`;
+    this.element.style.transition = 'transform 1s';
+    this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${90 * direction}deg)`;
     setTimeout(() => {
       this.element.remove();
-    }, 500);
+    }, 1000);
     if (typeof this.onDismiss === 'function') {
       this.onDismiss();
     }
