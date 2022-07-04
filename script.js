@@ -21,11 +21,11 @@ function appendNewCard() {
     imageUrl: urls[cardCount % 5],
     onDismiss: appendNewCard,
     onLike: () => {
-      like.style.visibility = 'visible';
+      like.style.animationPlayState = 'running';
       like.classList.toggle('trigger');
     },
     onDislike: () => {
-      dislike.style.visibility = 'visible';
+      dislike.style.animationPlayState = 'running';
       dislike.classList.toggle('trigger');
     }
   });
