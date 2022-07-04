@@ -8,13 +8,14 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   background: linear-gradient(0deg, rgb(255, 96, 54), rgb(253, 38, 122))
     no-repeat;
 }
 
-.swiper {
+#swiper {
   height: 70vh;
   aspect-ratio: 2 / 3;
   perspective: 1000px;
@@ -42,11 +43,51 @@ body {
   object-position: 50% 50%;
 }
 
-.dot {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  background-color: rgb(255, 98, 0);
-  transform: translate(-50%, -50%);
+#like,
+#dislike {
+  font-size: 16vh;
+  border-radius: 50%;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  visibility: hidden;
+  animation-name: animation1;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+#like.trigger,
+#dislike.trigger {
+  animation-name: animation2;
+}
+
+#like {
+  color: red;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#dislike {
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@keyframes animation1 {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes animation2 {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }

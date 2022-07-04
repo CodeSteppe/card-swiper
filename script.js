@@ -1,5 +1,7 @@
 // DOM
-const swiper = document.querySelector('.swiper');
+const swiper = document.querySelector('#swiper');
+const like = document.querySelector('#like');
+const dislike = document.querySelector('#dislike');
 
 // constants
 const urls = [
@@ -17,7 +19,15 @@ let cardCount = 0;
 function appendNewCard() {
   const card = new Card({
     imageUrl: urls[cardCount % 5],
-    onDismiss: appendNewCard
+    onDismiss: appendNewCard,
+    onLike: () => {
+      like.style.visibility = 'visible';
+      like.classList.toggle('trigger');
+    },
+    onDislike: () => {
+      dislike.style.visibility = 'visible';
+      dislike.classList.toggle('trigger');
+    }
   });
   swiper.append(card.element);
   cardCount++;
