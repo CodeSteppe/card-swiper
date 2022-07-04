@@ -1,6 +1,10 @@
 class Card {
-  constructor({ imageUrl }) {
+  constructor({
+    imageUrl,
+    onDismiss
+  }) {
     this.imageUrl = imageUrl;
+    this.onDismiss = onDismiss;
     this.#init();
   }
 
@@ -25,6 +29,10 @@ class Card {
     });
 
     document.addEventListener('mouseup', this.#handleMoveEnd);
+
+    card.addEventListener('dragstart', (e) => {
+      e.preventDefault();
+    });
     // touch events
 
     this.element = card;
@@ -45,18 +53,24 @@ class Card {
     }
   }
 
-  #handleMoveEnd = (e) => {
+  #handleMoveEnd = () => {
     this.#startPoint = null;
-    this.element.removeEventListener('mousemove', this.#handleMove);
+    document.removeEventListener('mousemove', this.#handleMove);
     this.element.style.transition = 'transform 0.5s';
     this.element.style.transform = '';
   }
 
   #dismiss = (direction) => {
-    this.element.removeEventListener('mousemove', this.#handleMove);
+    this.#startPoint = null;
+    document.removeEventListener('mouseup', this.#handleMoveEnd);
+    document.removeEventListener('mousemove', this.#handleMove);
     this.element.style.transition = 'transform 0.5s';
-    if (direction === 1) {
-      this.element.style.transform = '';
-    }
+    this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${45 * direction}deg)`;
+    setTimeout(() => {
+      this.element.remove();
+      if (typeof this.onDismiss === 'function') {
+        this.onDismiss();
+      }
+    }, 500);
   }
 }

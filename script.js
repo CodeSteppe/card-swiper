@@ -13,16 +13,23 @@ const urls = [
 // variables
 let cardCount = 0;
 
-// first 5 cards
-(function () {
-  for (let i = 0; i < 5; i++) {
-    const card = new Card({ imageUrl: urls[cardCount % 5] });
-    swiper.append(card.element);
-    cardCount++;
-  }
+// functions
+function appendNewCard() {
+  const card = new Card({
+    imageUrl: urls[cardCount % 5],
+    onDismiss: appendNewCard
+  });
+  swiper.append(card.element);
+  cardCount++;
 
   const cards = swiper.querySelectorAll('.card');
   cards.forEach((card, index) => {
     card.style.setProperty('--i', index);
   });
-})()
+}
+
+// first 5 cards
+for (let i = 0; i < 5; i++) {
+  appendNewCard();
+}
+
