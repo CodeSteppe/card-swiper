@@ -21,6 +21,7 @@ body {
   perspective: 1000px;
   perspective-origin: center 50%;
   transform-style: preserve-3d;
+  position: relative;
 }
 
 .card {
