@@ -17,6 +17,12 @@ class Card {
   #offsetX;
   #offsetY;
 
+  #isTouchDevice = () => {
+    return (('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0) ||
+      (navigator.msMaxTouchPoints > 0));
+  }
+
   #init = () => {
     const card = document.createElement('div');
     card.classList.add('card');
@@ -24,7 +30,15 @@ class Card {
     img.src = this.imageUrl;
     card.append(img);
     this.element = card;
-    this.#listenToMouseEvents();
+    if (this.#isTouchDevice()) {
+      this.#listenToTouchEvents();
+    } else {
+      this.#listenToMouseEvents();
+    }
+  }
+
+  #listenToTouchEvents = () => {
+    console.log('listenToTouchEvents')
   }
 
   #listenToMouseEvents = () => {
