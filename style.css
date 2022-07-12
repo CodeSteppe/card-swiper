@@ -4,15 +4,18 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  background: linear-gradient(0deg, rgb(255, 96, 54), rgb(253, 38, 122))
-    no-repeat;
+  background: linear-gradient(0deg, rgb(255, 96, 54), rgb(253, 38, 122)) no-repeat;
 }
 
 #swiper {
@@ -30,11 +33,11 @@ body {
   position: absolute;
   border-radius: 20px;
   overflow: hidden;
-  transform: translateZ(calc(-30px * var(--i)))
-    translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+  transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
   filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
   cursor: pointer;
   user-select: none;
+  transition: transform 0.5s;
 }
 
 .card img {
@@ -75,20 +78,24 @@ body {
 }
 
 @keyframes animation1 {
+
   0%,
   100% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 1;
   }
 }
 
 @keyframes animation2 {
+
   0%,
   100% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 1;
   }

@@ -38,7 +38,17 @@ class Card {
   }
 
   #listenToTouchEvents = () => {
-    console.log('listenToTouchEvents')
+    this.element.addEventListener('touchstart', (e) => {
+      const touch = e.changedTouches[0];
+      if (!touch) return;
+      const { clientX, clientY } = touch;
+      this.#startPoint = { x: clientX, y: clientY }
+      document.addEventListener('touchmove', this.#handleTouchMove);
+      this.element.style.transition = 'transform 0s';
+    });
+
+    document.addEventListener('touchend', this.#handleTouchEnd);
+    document.addEventListener('cancel', this.#handleTouchEnd);
   }
 
   #listenToMouseEvents = () => {
@@ -46,7 +56,7 @@ class Card {
       const { clientX, clientY } = e;
       this.#startPoint = { x: clientX, y: clientY }
       document.addEventListener('mousemove', this.#handleMouseMove);
-      this.element.style.transition = '';
+      this.element.style.transition = 'transform 0s';
     });
 
     document.addEventListener('mouseup', this.#handleMoveUp);
@@ -57,12 +67,9 @@ class Card {
     });
   }
 
-  #handleMouseMove = (e) => {
-    e.preventDefault();
-    if (!this.#startPoint) return;
-    const { clientX, clientY } = e;
-    this.#offsetX = clientX - this.#startPoint.x;
-    this.#offsetY = clientY - this.#startPoint.y;
+  #handleMove = (x, y) => {
+    this.#offsetX = x - this.#startPoint.x;
+    this.#offsetY = y - this.#startPoint.y;
     const rotate = this.#offsetX * 0.1;
     this.element.style.transform = `translate(${this.#offsetX}px, ${this.#offsetY}px) rotate(${rotate}deg)`;
     // dismiss card
@@ -71,10 +78,32 @@ class Card {
     }
   }
 
+  // mouse event handlers
+  #handleMouseMove = (e) => {
+    e.preventDefault();
+    if (!this.#startPoint) return;
+    const { clientX, clientY } = e;
+    this.#handleMove(clientX, clientY);
+  }
+
   #handleMoveUp = () => {
     this.#startPoint = null;
     document.removeEventListener('mousemove', this.#handleMouseMove);
-    this.element.style.transition = 'transform 0.5s';
+    this.element.style.transform = '';
+  }
+
+  // touch event handlers
+  #handleTouchMove = (e) => {
+    if (!this.#startPoint) return;
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    const { clientX, clientY } = touch;
+    this.#handleMove(clientX, clientY);
+  }
+
+  #handleTouchEnd = () => {
+    this.#startPoint = null;
+    document.removeEventListener('touchmove', this.#handleTouchMove);
     this.element.style.transform = '';
   }
 
@@ -82,6 +111,8 @@ class Card {
     this.#startPoint = null;
     document.removeEventListener('mouseup', this.#handleMoveUp);
     document.removeEventListener('mousemove', this.#handleMouseMove);
+    document.removeEventListener('touchend', this.#handleTouchEnd);
+    document.removeEventListener('touchmove', this.#handleTouchMove);
     this.element.style.transition = 'transform 1s';
     this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${90 * direction}deg)`;
     this.element.classList.add('dismissing');
